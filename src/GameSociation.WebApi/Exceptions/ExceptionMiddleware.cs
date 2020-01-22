@@ -23,7 +23,7 @@ namespace GameSociation.WebApi.Exceptions
             }
             catch (Exception e)
             {
-                httpContext.Response.StatusCode = (int)MapToStatusCode(e);
+                httpContext.Response.StatusCode = (int) MapToStatusCode(e);
                 httpContext.Response.ContentType = "text/plain";
                 await httpContext.Response.WriteAsync(e.Message);
                 return;

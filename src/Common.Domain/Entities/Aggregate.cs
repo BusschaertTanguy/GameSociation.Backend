@@ -9,8 +9,7 @@ namespace Common.Domain.Entities
     {
         private readonly List<IEvent> _events = new List<IEvent>();
 
-        [JsonIgnore]
-        public IReadOnlyCollection<IEvent> Events => _events.AsReadOnly();
+        [JsonIgnore] public IReadOnlyCollection<IEvent> Events => _events.AsReadOnly();
 
         protected void RaiseEvent<TEvent>(TEvent @event, Action<TEvent> apply) where TEvent : IEvent
         {

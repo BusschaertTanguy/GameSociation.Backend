@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Association.Application.Views;
 using Association.Domain.Repositories;
-using Association.Domain.ValueObjects;
 using Common.Application.Commands;
 using Common.Application.Queries;
 
@@ -24,7 +23,7 @@ namespace Association.Application.Commands.InviteToAssociation
         public async Task Handle(InviteToAssociation notification, CancellationToken cancellationToken)
         {
             var associateView = _queryProcessor.Query<AssociateView>().FirstOrDefault(x => x.Tag.Username == notification.Username && x.Tag.Number == notification.TagNumber);
-            if(associateView == null)
+            if (associateView == null)
                 throw new InvalidOperationException("No associate found with that tag.");
 
             var association = await _associationRepository.GetById(notification.AssociationId).ConfigureAwait(false);

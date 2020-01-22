@@ -42,7 +42,7 @@ namespace Common.Domain.Enumerations
 
         public int CompareTo(object other)
         {
-            return Id.CompareTo(((Enumeration)other).Id);
+            return Id.CompareTo(((Enumeration) other).Id);
         }
     }
 }

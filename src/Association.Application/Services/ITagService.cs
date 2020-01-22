@@ -1,6 +1,4 @@
-﻿using Association.Domain.Entities;
-
-namespace Association.Application.Services
+﻿namespace Association.Application.Services
 {
     public interface ITagService
     {

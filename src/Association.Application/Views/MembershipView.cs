@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using Common.Application.Views;
 
 namespace Association.Application.Views

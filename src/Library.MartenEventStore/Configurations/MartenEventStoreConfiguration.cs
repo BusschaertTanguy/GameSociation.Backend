@@ -1,5 +1,4 @@
 ﻿using Account.Domain.Repositories;
-using Association.Domain.Entities;
 using Association.Domain.Repositories;
 using Common.Application.Queries;
 using Library.MartenEventStore.Projections;

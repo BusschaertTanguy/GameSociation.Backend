@@ -13,13 +13,5 @@ namespace Association.Application.Commands.CreateAssociation
 
         public Guid AssociateId { get; }
         public string Name { get; }
-
-        public string GetQueryParameters(string prefix)
-        {
-            if (!string.IsNullOrEmpty(prefix))
-                prefix = $"{prefix}.";
-
-            return $"{prefix}associateId, {prefix}name";
-        }
     }
 }

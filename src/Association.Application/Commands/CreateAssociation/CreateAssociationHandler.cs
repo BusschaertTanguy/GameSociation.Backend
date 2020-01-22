@@ -25,7 +25,7 @@ namespace Association.Application.Commands.CreateAssociation
         public async Task Handle(CreateAssociation notification, CancellationToken cancellationToken)
         {
             var associateNameInUse = _queryProcessor.Query<AssociationView>().Any(x => x.Name == notification.Name);
-            if(associateNameInUse)
+            if (associateNameInUse)
                 throw new InvalidOperationException("Association name already in use");
 
             var associate = await _associateRepository.GetById(notification.AssociateId).ConfigureAwait(false);

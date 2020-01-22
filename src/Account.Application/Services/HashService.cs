@@ -9,6 +9,7 @@ namespace Account.Application.Services
         private const int Iterations = 10000;
         private const int SaltSize = 16;
         private const int KeySize = 32;
+
         public string Hash(string value)
         {
             using var algorithm = new Rfc2898DeriveBytes(value, SaltSize, Iterations, HashAlgorithmName.SHA512);

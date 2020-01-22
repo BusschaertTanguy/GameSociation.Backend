@@ -11,6 +11,7 @@ namespace Common.Domain.ValueObjects
             {
                 return false;
             }
+
             return ReferenceEquals(left, null) || left.Equals(right);
         }
 
@@ -28,7 +29,7 @@ namespace Common.Domain.ValueObjects
                 return false;
             }
 
-            var other = (ValueObject)obj;
+            var other = (ValueObject) obj;
             using var thisValues = GetAtomicValues().GetEnumerator();
             using var otherValues = other.GetAtomicValues().GetEnumerator();
             while (thisValues.MoveNext() && otherValues.MoveNext())
@@ -45,6 +46,7 @@ namespace Common.Domain.ValueObjects
                     return false;
                 }
             }
+
             return !thisValues.MoveNext() && !otherValues.MoveNext();
         }
 
