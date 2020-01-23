@@ -16,7 +16,7 @@ GameSociation Backend project.
 - Application layer: API of the module, instead of using application services, we use CQRS (commands & queries and their respective handlers), contains:
   - Commands & command handlers: Used to change state, no response.
   - Queries & query handlers: Used to ask for state, no state can be changed here.
-  - Views: A projected, read only model of our aggregates / entities, this is a DTO without behaviour, and only serves as a representation for our aggregate / entities, as the state of the it is not exposed.
+  - Views: A projected, read only model of our aggregates / entities, this is a DTO without behaviour, and only serves as a representation for our aggregate / entities, as the state of it is not exposed.
   - Services: As we split our applicaiton services into handlers, some more technical related things like creating token, hashing a password, ... are hidden away behind a service.
   - Event handlers: There is a possiblity to catch events that are thrown from this / other domains. This allows us to do cross domain activity without having hard references. This also allows us to chain action while still having only 1 aggregates saved / transaction.
 
