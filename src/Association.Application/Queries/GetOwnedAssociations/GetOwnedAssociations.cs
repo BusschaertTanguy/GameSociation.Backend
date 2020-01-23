@@ -5,7 +5,7 @@ using Common.Application.Queries;
 
 namespace Association.Application.Queries.GetOwnedAssociations
 {
-    public class GetOwnedAssociations : IQuery<IEnumerable<AssociationView>>
+    public class GetOwnedAssociations : IQuery<List<AssociationView>>
     {
         public GetOwnedAssociations(Guid associateId)
         {

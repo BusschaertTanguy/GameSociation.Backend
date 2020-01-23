@@ -3,12 +3,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Association.Application.Views;
-using Association.Domain.Enumerations;
 using Common.Application.Queries;
 
 namespace Association.Application.Queries.GetJoinedAssociations
 {
-    public class GetJoinedAssociationsHandler : IQueryHandler<GetJoinedAssociations, IEnumerable<AssociationView>>
+    public class GetJoinedAssociationsHandler : IQueryHandler<GetJoinedAssociations, List<AssociationView>>
     {
         private readonly IQueryProcessor _queryProcessor;
 
@@ -17,10 +16,11 @@ namespace Association.Application.Queries.GetJoinedAssociations
             _queryProcessor = queryProcessor;
         }
 
-        public Task<IEnumerable<AssociationView>> Handle(GetJoinedAssociations request, CancellationToken cancellationToken)
+        public Task<List<AssociationView>> Handle(GetJoinedAssociations request, CancellationToken cancellationToken)
         {
-            var associations = _queryProcessor.Query<AssociationView>().Where(x => x.Members.Any(y => y.AssociateId == request.AssociateId && y.Role != MembershipRole.Owner.Id));
-            return Task.FromResult(associations.AsEnumerable());
+            var associationIds = _queryProcessor.Query<AssociateView>().SelectMany(x => x.JoinedAssociationIds).ToList();
+            var associations = _queryProcessor.Query<AssociationView>().Where(x => associationIds.Contains(x.Id)).ToList();
+            return Task.FromResult(associations);
         }
     }
 }

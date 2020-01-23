@@ -8,7 +8,7 @@ using Common.Application.Queries;
 
 namespace Association.Application.Queries.GetOwnedAssociations
 {
-    public class GetOwnedAssociationsHandler : IQueryHandler<GetOwnedAssociations, IEnumerable<AssociationView>>
+    public class GetOwnedAssociationsHandler : IQueryHandler<GetOwnedAssociations, List<AssociationView>>
     {
         private readonly IQueryProcessor _queryProcessor;
 
@@ -17,10 +17,11 @@ namespace Association.Application.Queries.GetOwnedAssociations
             _queryProcessor = queryProcessor;
         }
 
-        public Task<IEnumerable<AssociationView>> Handle(GetOwnedAssociations request, CancellationToken cancellationToken)
+        public Task<List<AssociationView>> Handle(GetOwnedAssociations request, CancellationToken cancellationToken)
         {
-            var associations = _queryProcessor.Query<AssociationView>().Where(x => x.Members.Any(y => y.AssociateId == request.AssociateId && y.Role == MembershipRole.Owner.Id));
-            return Task.FromResult(associations.AsEnumerable());
+            var associationIds = _queryProcessor.Query<AssociateView>().SelectMany(x => x.OwnedAssociationIds).ToList();
+            var associations = _queryProcessor.Query<AssociationView>().Where(x => associationIds.Contains(x.Id)).ToList();
+            return Task.FromResult(associations);
         }
     }
 }

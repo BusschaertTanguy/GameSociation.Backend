@@ -34,6 +34,18 @@ namespace Association.Domain.Entities
             RaiseEvent(new AssociateInvited(Id, associateId, MembershipRole.Owner.Id, MembershipStatus.Accepted.Id), Apply);
         }
 
+        private void Apply(AssociationCreated @event)
+        {
+            Id = @event.Id;
+            _name = @event.Name;
+            AddMember(@event.MembershipRoleId, @event.MembershipStatusId, @event.OwnerId);
+        }
+
+        private void Apply(AssociateInvited @event)
+        {
+            AddMember(@event.MembershipRoleId, @event.MembershipStatusId, @event.AssociateId);
+        }
+
         private void Authorize(Guid responsibleId, MembershipRole requiredRole)
         {
             var membership = _members.FirstOrDefault(x => x.IsAssociate(responsibleId));
@@ -45,20 +57,11 @@ namespace Association.Domain.Entities
                 throw new InvalidOperationException("You don't have the rights to perform this action");
         }
 
-        private void Apply(AssociationCreated @event)
+        private void AddMember(int roleId, int statusId, Guid associateId)
         {
-            Id = @event.Id;
-            _name = @event.Name;
-            var role = Enumeration.GetAll<MembershipRole>().First(x => x.Id == @event.MembershipRoleId);
-            var status = Enumeration.GetAll<MembershipStatus>().First(x => x.Id == @event.MembershipStatusId);
-            _members.Add(new Membership(Id, @event.OwnerId, role, status));
-        }
-
-        private void Apply(AssociateInvited @event)
-        {
-            var role = Enumeration.GetAll<MembershipRole>().First(x => x.Id == @event.MembershipRoleId);
-            var status = Enumeration.GetAll<MembershipStatus>().First(x => x.Id == @event.MembershipStatusId);
-            var membership = new Membership(Id, @event.AssociateId, role, status);
+            var role = Enumeration.GetAll<MembershipRole>().First(x => x.Id == roleId);
+            var status = Enumeration.GetAll<MembershipStatus>().First(x => x.Id == statusId);
+            var membership = new Membership(Id, associateId, role, status);
             _members.Add(membership);
         }
     }

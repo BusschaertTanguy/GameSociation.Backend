@@ -25,11 +25,11 @@ namespace GameSociation.WebApi.Controllers
             => await ProcessQuery<GetAssociateByAccountId, AssociateView>(new GetAssociateByAccountId(accountId));
 
         [HttpGet("{id}/association/owned")]
-        public async Task<ActionResult<IEnumerable<AssociationView>>> GetOwnedAssociations(Guid id)
-            => await ProcessQuery<GetOwnedAssociations, IEnumerable<AssociationView>>(new GetOwnedAssociations(id));
+        public async Task<ActionResult<List<AssociationView>>> GetOwnedAssociations(Guid id)
+            => await ProcessQuery<GetOwnedAssociations, List<AssociationView>>(new GetOwnedAssociations(id));
 
         [HttpGet("{id}/association/joined")]
-        public async Task<ActionResult<IEnumerable<AssociationView>>> GetJoinedAssociations(Guid id)
-            => await ProcessQuery<GetJoinedAssociations, IEnumerable<AssociationView>>(new GetJoinedAssociations(id));
+        public async Task<ActionResult<List<AssociationView>>> GetJoinedAssociations(Guid id)
+            => await ProcessQuery<GetJoinedAssociations, List<AssociationView>>(new GetJoinedAssociations(id));
     }
 }
