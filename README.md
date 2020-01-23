@@ -25,7 +25,7 @@ GameSociation Backend project.
 ### Persistence: Event sourcing
 
 I opted for event sourcing because it fits my following needs:
-  - A by technology unaffected (or minimally) domain model. Most of the time when using standard ORM's like EF, you have to expose your domain model's fields to map them to your DB (I'm aware of private backing fields in EF Core, but it's to tedious and the error margin is large ). When using ES, your model doesn't have to expose any state, which for me is a major pro.
+  - A by technology unaffected (or minimally) domain model. Most of the time when using standard ORM's like EF, you have to expose your domain model's fields to map them to your DB (I'm aware of private backing fields in EF Core, but it's too tedious and the error margin is large ). When using ES, your model doesn't have to expose any state, which for me is a major pro.
   - I've always liked to have view / readmodels to represent the state of something, instead of using entities. I guess this is also possible with normal ORM's, but using ES enforces you to create projections for your entities, this only streamlines my work.
 
 To fit my ES needs, I used the MartenDB library. This wraps an event store around PostgreSQL.
