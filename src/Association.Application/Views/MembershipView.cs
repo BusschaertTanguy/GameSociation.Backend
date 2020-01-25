@@ -1,13 +1,20 @@
 ﻿using System;
-using Common.Application.Views;
 
 namespace Association.Application.Views
 {
-    public class MembershipView : IProjection
+    public class MembershipView
     {
-        public Guid AssociationId { get; set; }
-        public Guid AssociateId { get; set; }
-        public int Role { get; set; }
-        public int Status { get; set; }
+        public MembershipView(Guid associationId, AssociateView associate, int role, int status)
+        {
+            AssociationId = associationId;
+            Associate = associate;
+            Role = role;
+            Status = status;
+        }
+
+        public Guid AssociationId { get; }
+        public AssociateView Associate { get; }
+        public int Role { get; }
+        public int Status { get; }
     }
 }

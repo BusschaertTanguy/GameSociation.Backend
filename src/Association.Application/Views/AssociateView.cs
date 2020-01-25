@@ -1,15 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Application.Views;
 
 namespace Association.Application.Views
 {
-    public class AssociateView : IView
+    public class AssociateView
     {
-        public Guid Id { get; set; }
-        public Guid AccountId { get; set; }
-        public TagView Tag { get; set; }
-        public IList<Guid> OwnedAssociationIds { get; set; }
-        public IList<Guid> JoinedAssociationIds { get; set; }
+        public AssociateView(Guid id, Guid accountId, TagView tag)
+        {
+            Id = id;
+            AccountId = accountId;
+            Tag = tag;
+        }
+
+        public Guid Id { get; }
+        public Guid AccountId { get; }
+        public TagView Tag { get; }
+    }
+
+    public class AssociateDetailView : AssociateView
+    {
+        public AssociateDetailView(Guid id, Guid accountId, TagView tag, IEnumerable<Guid> joinedAssociation, IEnumerable<Guid> ownedAssociations) : base(id, accountId, tag)
+        {
+            JoinedAssociation = joinedAssociation;
+            OwnedAssociations = ownedAssociations;
+        }
+
+        public IEnumerable<Guid> JoinedAssociation { get; }
+        public IEnumerable<Guid> OwnedAssociations { get; }
     }
 }

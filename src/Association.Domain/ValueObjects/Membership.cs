@@ -21,7 +21,17 @@ namespace Association.Domain.ValueObjects
         }
 
         public bool IsAssociate(Guid associateId) => _associateId == associateId;
-        public bool HasEquivalentRole(MembershipRole role) => role.IsEquivalent(_role);
+        public bool HasEquivalentRole(MembershipRole role) => _role.IsEquivalent(role);
+
+        public Membership Accept()
+        {
+            return new Membership(_associationId, _associateId, _role, MembershipStatus.Accepted);
+        }
+
+        public Membership Refuse()
+        {
+            return new Membership(_associationId, _associateId, _role, MembershipStatus.Refused);
+        }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

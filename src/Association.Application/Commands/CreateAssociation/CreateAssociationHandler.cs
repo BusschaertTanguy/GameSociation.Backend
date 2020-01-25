@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Association.Application.Views;
+using Association.Application.Projections;
 using Association.Domain.Repositories;
 using Common.Application.Commands;
 using Common.Application.Queries;
@@ -24,7 +24,7 @@ namespace Association.Application.Commands.CreateAssociation
 
         public async Task Handle(CreateAssociation notification, CancellationToken cancellationToken)
         {
-            var associateNameInUse = _queryProcessor.Query<AssociationView>().Any(x => x.Name == notification.Name);
+            var associateNameInUse = _queryProcessor.Query<AssociationProjection>().Any(x => x.Name == notification.Name);
             if (associateNameInUse)
                 throw new InvalidOperationException("Association name already in use");
 

@@ -4,8 +4,8 @@ using System.Net.Mail;
 using System.Threading;
 using System.Threading.Tasks;
 using Account.Application.Exceptions;
+using Account.Application.Projections;
 using Account.Application.Services;
-using Account.Application.Views;
 using Common.Application.Queries;
 
 namespace Account.Application.Queries.Login
@@ -27,7 +27,7 @@ namespace Account.Application.Queries.Login
         {
             var email = new MailAddress(request.Email);
 
-            var account = _queryProcessor.Query<AccountView>().FirstOrDefault(x => x.Email == email.Address);
+            var account = _queryProcessor.Query<AccountProjection>().FirstOrDefault(x => x.Email == email.Address);
             if (account == null)
                 throw new InvalidOperationException($"Account with email {request.Email} doesn't exists");
 

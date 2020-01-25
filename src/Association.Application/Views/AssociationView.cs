@@ -1,13 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Application.Views;
 
 namespace Association.Application.Views
 {
-    public class AssociationView : IView
+    public class AssociationView
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public List<MembershipView> Members { get; set; }
+        public AssociationView(Guid id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public Guid Id { get; }
+        public string Name { get; }
+    }
+
+    public class AssociationDetailView : AssociationView
+    {
+        public AssociationDetailView(Guid id, string name, IEnumerable<MembershipView> members) : base(id, name)
+        {
+            Members = members;
+        }
+
+        public IEnumerable<MembershipView> Members { get; }
     }
 }

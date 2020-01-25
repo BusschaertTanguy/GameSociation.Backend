@@ -3,8 +3,8 @@ using System.Linq;
 using System.Net.Mail;
 using System.Threading;
 using System.Threading.Tasks;
+using Account.Application.Projections;
 using Account.Application.Services;
-using Account.Application.Views;
 using Account.Domain.Repositories;
 using Common.Application.Commands;
 using Common.Application.Queries;
@@ -27,7 +27,7 @@ namespace Account.Application.Commands.Register
         public async Task Handle(Register notification, CancellationToken cancellationToken)
         {
             var email = new MailAddress(notification.Email);
-            var emailInUse = _queryProcessor.Query<AccountView>().Any(x => x.Email == email.Address);
+            var emailInUse = _queryProcessor.Query<AccountProjection>().Any(x => x.Email == email.Address);
 
             if (emailInUse)
                 throw new InvalidOperationException($"Account with email {email.Address} already exists");

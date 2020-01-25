@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Association.Application.Queries.GetAssociateByAccountId;
+using Association.Application.Queries.GetAssociateInvitations;
 using Association.Application.Queries.GetJoinedAssociations;
 using Association.Application.Queries.GetOwnedAssociations;
 using Association.Application.Views;
@@ -31,5 +32,9 @@ namespace GameSociation.WebApi.Controllers
         [HttpGet("{id}/association/joined")]
         public async Task<ActionResult<List<AssociationView>>> GetJoinedAssociations(Guid id)
             => await ProcessQuery<GetJoinedAssociations, List<AssociationView>>(new GetJoinedAssociations(id));
+
+        [HttpGet("{id}/invitations")]
+        public async Task<ActionResult<List<InvitationView>>> GetInvitations(Guid id)
+            => await ProcessQuery<GetAssociateInvitations, List<InvitationView>>(new GetAssociateInvitations(id));
     }
 }

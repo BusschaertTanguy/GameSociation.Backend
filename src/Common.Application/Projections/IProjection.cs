@@ -1,4 +1,4 @@
-﻿namespace Common.Application.Views
+﻿namespace Common.Application.Projections
 {
     public interface IProjection
     {

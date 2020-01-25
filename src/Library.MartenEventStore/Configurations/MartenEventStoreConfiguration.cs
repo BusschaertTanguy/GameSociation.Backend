@@ -1,4 +1,5 @@
-﻿using Account.Domain.Repositories;
+﻿using System;
+using Account.Domain.Repositories;
 using Association.Domain.Repositories;
 using Common.Application.Queries;
 using Library.MartenEventStore.Projections;
@@ -15,7 +16,7 @@ namespace Library.MartenEventStore.Configurations
     {
         public static void ConfigureMartenEventStore(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton(provider => CreateStore(configuration.GetConnectionString("GameSociationDB")));
+            services.AddSingleton(provider => CreateStore(configuration.GetConnectionString("GameSociationDB"), provider));
             services.AddScoped(provider => provider.GetService<IDocumentStore>().QuerySession());
             services.AddScoped(provider => provider.GetService<IDocumentStore>().LightweightSession());
 
@@ -25,7 +26,7 @@ namespace Library.MartenEventStore.Configurations
             services.AddTransient<IAssociationRepository, AssociationRepository>();
         }
 
-        private static IDocumentStore CreateStore(string connectionString)
+        private static IDocumentStore CreateStore(string connectionString, IServiceProvider provider)
         {
             var store = DocumentStore.For(_ =>
             {

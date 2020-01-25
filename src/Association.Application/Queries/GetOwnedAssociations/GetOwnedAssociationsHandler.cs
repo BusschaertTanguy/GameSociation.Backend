@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Association.Application.Projections;
 using Association.Application.Views;
-using Association.Domain.Enumerations;
 using Common.Application.Queries;
 
 namespace Association.Application.Queries.GetOwnedAssociations
@@ -19,9 +19,18 @@ namespace Association.Application.Queries.GetOwnedAssociations
 
         public Task<List<AssociationView>> Handle(GetOwnedAssociations request, CancellationToken cancellationToken)
         {
-            var associationIds = _queryProcessor.Query<AssociateView>().SelectMany(x => x.OwnedAssociationIds).ToList();
-            var associations = _queryProcessor.Query<AssociationView>().Where(x => associationIds.Contains(x.Id)).ToList();
-            return Task.FromResult(associations);
+            var associateProjection = _queryProcessor.Query<AssociateProjection>().FirstOrDefault(x => x.Id == request.AssociateId);
+            if (associateProjection?.OwnedAssociationIds == null)
+                return Task.FromResult(new List<AssociationView>());
+
+
+            var associationProjections = _queryProcessor
+                .Query<AssociationProjection>()
+                .Where(x => associateProjection.OwnedAssociationIds.Contains(x.Id))
+                .ToList();
+
+            var associationViews = associationProjections.Select(x => new AssociationView(x.Id, x.Name)).ToList();
+            return Task.FromResult(associationViews);
         }
     }
 }

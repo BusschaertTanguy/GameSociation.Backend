@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Association.Application.Projections;
 using Association.Application.Views;
 using Common.Application.Queries;
 
@@ -18,10 +19,11 @@ namespace Association.Application.Queries.GetAssociateByAccountId
 
         public Task<AssociateView> Handle(GetAssociateByAccountId request, CancellationToken cancellationToken)
         {
-            var associateView = _queryProcessor.Query<AssociateView>().FirstOrDefault(x => x.AccountId == request.AccountId);
-            if (associateView == null)
+            var associateProjection = _queryProcessor.Query<AssociateProjection>().FirstOrDefault(x => x.AccountId == request.AccountId);
+            if (associateProjection == null)
                 throw new InvalidOperationException("No associate found for this account");
-            return Task.FromResult(associateView);
+            var view = new AssociateView(associateProjection.Id, associateProjection.AccountId, new TagView(associateProjection.Tag.Username, associateProjection.Tag.Number));
+            return Task.FromResult(view);
         }
     }
 }

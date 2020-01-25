@@ -1,36 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
-using Association.Application.Views;
+using System.Linq;
+using Association.Application.Projections;
 using Association.Domain.Events;
 using Marten.Events.Projections;
 
 namespace Library.MartenEventStore.Projections
 {
-    public class AssociateProjection : ViewProjection<AssociateView, Guid>
+    public class AssociateProjection : ViewProjection<Association.Application.Projections.AssociateProjection, Guid>
     {
         public AssociateProjection()
         {
             ProjectEvent<AssociateCreated>(Persist);
             ProjectEvent<AssociationCreated>(x => x.OwnerId, Persist);
+            ProjectEvent<AssociateInvited>(x => x.AssociateId, Persist);
+            ProjectEvent<InvitationAccepted>(x => x.AssociateId, Persist);
+            ProjectEvent<InvitationRefused>(x => x.AssociateId, Persist);
         }
 
-        private static void Persist(AssociateView view, AssociateCreated @event)
+        private static void Persist(Association.Application.Projections.AssociateProjection projection, AssociateCreated @event)
         {
-            view.Id = @event.Id;
-            view.AccountId = @event.AccountId;
-            view.Tag = new TagView
+            projection.Id = @event.Id;
+            projection.AccountId = @event.AccountId;
+            projection.Tag = new TagProjection
             {
                 Number = @event.TagNumber,
                 Username = @event.Username,
             };
         }
 
-        private static void Persist(AssociateView view, AssociationCreated @event)
+        private static void Persist(Association.Application.Projections.AssociateProjection projection, AssociationCreated @event)
         {
-            if(view.OwnedAssociationIds == null)
-                view.OwnedAssociationIds = new List<Guid>();
+            if (projection.OwnedAssociationIds == null)
+                projection.OwnedAssociationIds = new List<Guid>();
 
-            view.OwnedAssociationIds.Add(@event.Id);
+            projection.OwnedAssociationIds.Add(@event.Id);
+        }
+
+        private static void Persist(Association.Application.Projections.AssociateProjection projection, AssociateInvited @event)
+        {
+            if (projection.Invitations == null)
+                projection.Invitations = new List<InvitationProjection>();
+
+            projection.Invitations.Add(new InvitationProjection
+            {
+                AssociationId = @event.Id,
+                AssociateId = @event.AssociateId
+            });
+        }
+
+        private static void Persist(Association.Application.Projections.AssociateProjection projection, InvitationAccepted @event)
+        {
+            var invitation = projection.Invitations.FirstOrDefault(x => x.AssociationId == @event.Id && x.AssociateId == @event.AssociateId);
+            if (invitation == null)
+                return;
+
+            projection.Invitations.Remove(invitation);
+
+            if(projection.JoinedAssociationIds == null)
+                projection.JoinedAssociationIds = new List<Guid>();
+
+            projection.JoinedAssociationIds.Add(@event.Id);
+        }
+
+        private static void Persist(Association.Application.Projections.AssociateProjection projection, InvitationRefused @event)
+        {
+            var invitation = projection.Invitations.FirstOrDefault(x => x.AssociationId == @event.Id && x.AssociateId == @event.AssociateId);
+            if (invitation == null)
+                return;
+
+            projection.Invitations.Remove(invitation);
         }
     }
 }

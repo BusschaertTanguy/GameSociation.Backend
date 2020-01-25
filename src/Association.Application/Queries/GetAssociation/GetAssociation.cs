@@ -4,7 +4,7 @@ using Common.Application.Queries;
 
 namespace Association.Application.Queries.GetAssociation
 {
-    public class GetAssociation : IQuery<AssociationView>
+    public class GetAssociation : IQuery<AssociationDetailView>
     {
         public GetAssociation(Guid id)
         {

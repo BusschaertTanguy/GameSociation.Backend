@@ -1,10 +1,14 @@
-﻿using Common.Application.Views;
-
-namespace Association.Application.Views
+﻿namespace Association.Application.Views
 {
-    public class TagView : IProjection
+    public class TagView
     {
-        public string Username { get; set; }
-        public int Number { get; set; }
+        public TagView(string username, int number)
+        {
+            Username = username;
+            Number = number;
+        }
+
+        public string Username { get; }
+        public int Number { get; }
     }
 }

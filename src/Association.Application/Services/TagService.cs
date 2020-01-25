@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Association.Application.Views;
+using Association.Application.Projections;
 using Common.Application.Queries;
 
 namespace Association.Application.Services
@@ -15,7 +15,7 @@ namespace Association.Application.Services
 
         public int GenerateTagNumber(string username)
         {
-            var associateView = _queryProvider.Query<AssociateView>().Where(x => x.Tag.Username == username).OrderByDescending(x => x.Tag.Number).FirstOrDefault();
+            var associateView = _queryProvider.Query<AssociateProjection>().Where(x => x.Tag.Username == username).OrderByDescending(x => x.Tag.Number).FirstOrDefault();
             return associateView?.Tag.Number + 1 ?? 1;
         }
     }

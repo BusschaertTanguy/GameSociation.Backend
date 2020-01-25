@@ -1,6 +1,6 @@
 ﻿using System.Linq;
+using Common.Application.Projections;
 using Common.Application.Queries;
-using Common.Application.Views;
 using Marten;
 
 namespace Library.MartenEventStore.Queries
@@ -15,7 +15,7 @@ namespace Library.MartenEventStore.Queries
         }
 
 
-        public IQueryable<T> Query<T>() where T : IView
+        public IQueryable<T> Query<T>() where T : IProjectionRoot
         {
             var queryable = _session.Query<T>();
             return queryable;

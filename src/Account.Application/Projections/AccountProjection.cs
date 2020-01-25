@@ -1,9 +1,9 @@
 ﻿using System;
-using Common.Application.Views;
+using Common.Application.Projections;
 
-namespace Account.Application.Views
+namespace Account.Application.Projections
 {
-    public class AccountView : IView
+    public class AccountProjection : IProjectionRoot
     {
         public Guid Id { get; set; }
         public string Email { get; set; }
