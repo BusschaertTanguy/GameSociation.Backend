@@ -22,6 +22,8 @@ namespace Association.Domain.ValueObjects
 
         public bool IsAssociate(Guid associateId) => _associateId == associateId;
         public bool HasEquivalentRole(MembershipRole role) => _role.IsEquivalent(role);
+        public bool IsPending => _status.Equals(MembershipStatus.Pending);
+        public bool IsAccepted => _status.Equals(MembershipStatus.Accepted);
 
         public Membership Accept()
         {
@@ -31,6 +33,11 @@ namespace Association.Domain.ValueObjects
         public Membership Refuse()
         {
             return new Membership(_associationId, _associateId, _role, MembershipStatus.Refused);
+        }
+
+        public Membership Leave()
+        {
+            return new Membership(_associationId, _associateId, _role, MembershipStatus.Left);
         }
 
         protected override IEnumerable<object> GetAtomicValues()

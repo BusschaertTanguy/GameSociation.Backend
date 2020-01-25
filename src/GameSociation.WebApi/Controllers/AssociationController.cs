@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Association.Application.Commands.AcceptInvitation;
 using Association.Application.Commands.CreateAssociation;
 using Association.Application.Commands.InviteToAssociation;
+using Association.Application.Commands.LeaveAssociation;
 using Association.Application.Commands.RefuseInvitation;
 using Association.Application.Queries.GetAssociation;
 using Association.Application.Views;
@@ -39,6 +40,10 @@ namespace GameSociation.WebApi.Controllers
 
         [HttpPost("{id}/membership/{associateId}/refuse")]
         public async Task<ActionResult> RefuseInvitation([FromBody] RefuseInvitation command)
+            => await PublishCommand(command);
+
+        [HttpPost("{id}/membership/{associateId}/leave")]
+        public async Task<ActionResult> LeaveAssociation([FromBody] LeaveAssociation command)
             => await PublishCommand(command);
     }
 }

@@ -62,5 +62,14 @@ namespace Library.MartenEventStore.Projections
 
             member.Status = MembershipStatus.Refused.Id;
         }
+
+        private static void Persist(Association.Application.Projections.AssociationProjection projection, AssociationLeft @event)
+        {
+            var member = projection.Members?.FirstOrDefault(x => x.AssociateId == @event.AssociateId);
+            if (member == null)
+                return;
+
+            member.Status = MembershipStatus.Left.Id;
+        }
     }
 }

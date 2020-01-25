@@ -29,8 +29,7 @@ namespace Association.Domain.Entities
         {
             Authorize(responsibleId, MembershipRole.Admin);
 
-            var alreadyInAssociation = _members.Any(x => x.IsAssociate(associateId));
-            if (alreadyInAssociation)
+            if (IsMember(associateId))
                 throw new InvalidOperationException("Associate already has a membership");
 
             RaiseEvent(new AssociateInvited(Id, associateId, MembershipRole.Member.Id, MembershipStatus.Pending.Id), Apply);
@@ -39,8 +38,16 @@ namespace Association.Domain.Entities
         public void AcceptInvitation(Guid responsibleId, Guid associateId)
         {
             Authorize(responsibleId, MembershipRole.Member);
+
+            if(!IsMember(associateId))
+                throw new InvalidOperationException("Associate is not part of the association");
+
             if (responsibleId != associateId)
                 throw new InvalidOperationException("Only the associate can accept his invitation");
+
+            var membership = GetMembership(associateId);
+            if(!membership.IsPending)
+                throw new InvalidOperationException("Can only accept a pending invitation");
 
             RaiseEvent(new InvitationAccepted(Id, associateId), Apply);
         }
@@ -48,10 +55,35 @@ namespace Association.Domain.Entities
         public void RefuseInvitation(Guid responsibleId, Guid associateId)
         {
             Authorize(responsibleId, MembershipRole.Member);
+
+            if (!IsMember(associateId))
+                throw new InvalidOperationException("Associate is not part of the association");
+
             if (responsibleId != associateId)
                 throw new InvalidOperationException("Only the associate can accept his invitation");
 
+            var membership = GetMembership(associateId);
+            if (!membership.IsPending)
+                throw new InvalidOperationException("Can only refuse a pending invitation");
+
             RaiseEvent(new InvitationRefused(Id, associateId), Apply);
+        }
+
+        public void Leave(Guid responsibleId, Guid associateId)
+        {
+            Authorize(responsibleId, MembershipRole.Member);
+
+            if (!IsMember(associateId))
+                throw new InvalidOperationException("Associate is not part of the association");
+
+            if (responsibleId != associateId)
+                throw new InvalidOperationException("Only the associate self can choose to leave");
+
+            var membership = GetMembership(associateId);
+            if (!membership.IsAccepted)
+                throw new InvalidOperationException("Can only leave an accepted membership");
+
+            RaiseEvent(new AssociationLeft(Id, associateId), Apply);
         }
 
         #endregion
@@ -74,14 +106,21 @@ namespace Association.Domain.Entities
         {
             var membership = GetMembership(@event.AssociateId);
             var acceptedMembership = membership.Accept();
-            _members[_members.IndexOf(membership)] = acceptedMembership;
+            ReplaceMembership(membership, acceptedMembership);
         }
 
         private void Apply(InvitationRefused @event)
         {
             var membership = GetMembership(@event.AssociateId);
             var refusedMembership = membership.Refuse();
-            _members[_members.IndexOf(membership)] = refusedMembership;
+            ReplaceMembership(membership, refusedMembership);
+        }
+
+        private void Apply(AssociationLeft @event)
+        {
+            var membership = GetMembership(@event.AssociateId);
+            var leftMembership = membership.Leave();
+            ReplaceMembership(membership, leftMembership);
         }
 
         #endregion
@@ -106,12 +145,22 @@ namespace Association.Domain.Entities
             return membership;
         }
 
+        private bool IsMember(Guid associateId)
+        {
+            return _members.Any(x => x.IsAssociate(associateId));
+        }
+
         private void AddMember(int roleId, int statusId, Guid associateId)
         {
             var role = Enumeration.GetAll<MembershipRole>().First(x => x.Id == roleId);
             var status = Enumeration.GetAll<MembershipStatus>().First(x => x.Id == statusId);
             var membership = new Membership(Id, associateId, role, status);
             _members.Add(membership);
+        }
+
+        private void ReplaceMembership(Membership oldMembership, Membership newMembership)
+        {
+            _members[_members.IndexOf(oldMembership)] = newMembership;
         }
 
         #endregion

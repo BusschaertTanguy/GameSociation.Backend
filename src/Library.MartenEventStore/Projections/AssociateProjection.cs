@@ -16,6 +16,7 @@ namespace Library.MartenEventStore.Projections
             ProjectEvent<AssociateInvited>(x => x.AssociateId, Persist);
             ProjectEvent<InvitationAccepted>(x => x.AssociateId, Persist);
             ProjectEvent<InvitationRefused>(x => x.AssociateId, Persist);
+            ProjectEvent<AssociationLeft>(x => x.AssociateId, Persist);
         }
 
         private static void Persist(Association.Application.Projections.AssociateProjection projection, AssociateCreated @event)
@@ -70,6 +71,15 @@ namespace Library.MartenEventStore.Projections
                 return;
 
             projection.Invitations.Remove(invitation);
+        }
+
+        private static void Persist(Association.Application.Projections.AssociateProjection projection, AssociationLeft @event)
+        {
+            var association = projection.JoinedAssociationIds.FirstOrDefault(id => @event.Id == id);
+            if (association == Guid.Empty)
+                return;
+
+            projection.JoinedAssociationIds.Remove(association);
         }
     }
 }
