@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Association.Domain.Enumerations;
+using Common.Domain.Enumerations;
 using Common.Domain.ValueObjects;
 
 namespace Association.Domain.ValueObjects
@@ -24,6 +26,8 @@ namespace Association.Domain.ValueObjects
         public bool HasEquivalentRole(MembershipRole role) => _role.IsEquivalent(role);
         public bool IsPending => _status.Equals(MembershipStatus.Pending);
         public bool IsAccepted => _status.Equals(MembershipStatus.Accepted);
+        public bool CanPromote => _role.Equals(MembershipRole.Member);
+        public bool CanDemote => _role.Equals(MembershipRole.Admin);
 
         public Membership Accept()
         {
@@ -38,6 +42,21 @@ namespace Association.Domain.ValueObjects
         public Membership Leave()
         {
             return new Membership(_associationId, _associateId, _role, MembershipStatus.Left);
+        }
+
+        public Membership Kick()
+        {
+            return new Membership(_associationId, _associateId, _role, MembershipStatus.Kicked);
+        }
+
+        public Membership Promote()
+        {
+            return new Membership(_associationId, _associateId, MembershipRole.Admin, _status);
+        }
+
+        public Membership Demote()
+        {
+            return new Membership(_associationId, _associateId, MembershipRole.Member, _status);
         }
 
         protected override IEnumerable<object> GetAtomicValues()

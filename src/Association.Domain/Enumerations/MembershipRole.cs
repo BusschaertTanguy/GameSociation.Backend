@@ -1,4 +1,5 @@
-﻿using Common.Domain.Enumerations;
+﻿using System.Linq;
+using Common.Domain.Enumerations;
 
 namespace Association.Domain.Enumerations
 {

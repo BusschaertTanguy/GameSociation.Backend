@@ -3,15 +3,16 @@ using Common.Domain.Events;
 
 namespace Association.Domain.Events
 {
-    public class AssociationLeft : IEvent
+    public class AssociatePromoted : IEvent
     {
-        public AssociationLeft(Guid associationId, Guid associateId)
+        public AssociatePromoted(Guid associationId, Guid associateId)
         {
             Id = associationId;
             AssociateId = associateId;
         }
 
-        public Guid Id { get; }
         public Guid AssociateId { get; }
+
+        public Guid Id { get; }
     }
 }

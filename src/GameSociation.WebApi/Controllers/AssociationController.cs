@@ -2,8 +2,11 @@
 using System.Threading.Tasks;
 using Association.Application.Commands.AcceptInvitation;
 using Association.Application.Commands.CreateAssociation;
+using Association.Application.Commands.DemoteAssociate;
 using Association.Application.Commands.InviteToAssociation;
+using Association.Application.Commands.KickAssociate;
 using Association.Application.Commands.LeaveAssociation;
+using Association.Application.Commands.PromoteAssociate;
 using Association.Application.Commands.RefuseInvitation;
 using Association.Application.Queries.GetAssociation;
 using Association.Application.Views;
@@ -44,6 +47,18 @@ namespace GameSociation.WebApi.Controllers
 
         [HttpPost("{id}/membership/{associateId}/leave")]
         public async Task<ActionResult> LeaveAssociation([FromBody] LeaveAssociation command)
+            => await PublishCommand(command);
+
+        [HttpPost("{id}/membership/{associateId}/kick")]
+        public async Task<ActionResult> KickAssociate([FromBody] KickAssociate command)
+            => await PublishCommand(command);
+
+        [HttpPost("{id}/membership/{associateId}/promote")]
+        public async Task<ActionResult> PromoteAssociate([FromBody] PromoteAssociate command)
+            => await PublishCommand(command);
+
+        [HttpPost("{id}/membership/{associateId}/demote")]
+        public async Task<ActionResult> DemoteAssociate([FromBody] DemoteAssociate command)
             => await PublishCommand(command);
     }
 }
