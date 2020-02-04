@@ -1,13 +1,12 @@
-image: microsoft/dotnet:latest
+image: mcr.microsoft.com/dotnet/core/sdk:3.0
 
 stages:
     - build
 
 before_script:
-    - "cd src/GameSociation.WebApi"
-    - "dotnet restore"
+    - "dotnet restore GameSociation.Backend.sln"
 
 build:
     stage: build
     script:
-        - "dotnet build"
+        - "dotnet build GameSociation.Backend.sln"
