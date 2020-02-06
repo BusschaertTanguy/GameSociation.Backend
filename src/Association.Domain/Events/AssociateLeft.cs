@@ -11,7 +11,8 @@ namespace Association.Domain.Events
             AssociateId = associateId;
         }
 
-        public Guid Id { get; }
         public Guid AssociateId { get; }
+
+        public Guid Id { get; }
     }
 }

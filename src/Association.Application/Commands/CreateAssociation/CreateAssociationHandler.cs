@@ -11,9 +11,9 @@ namespace Association.Application.Commands.CreateAssociation
 {
     public class CreateAssociationHandler : ICommandHandler<CreateAssociation>
     {
-        private readonly IQueryProcessor _queryProcessor;
         private readonly IAssociateRepository _associateRepository;
         private readonly IAssociationRepository _associationRepository;
+        private readonly IQueryProcessor _queryProcessor;
 
         public CreateAssociationHandler(IQueryProcessor queryProcessor, IAssociateRepository associateRepository, IAssociationRepository associationRepository)
         {

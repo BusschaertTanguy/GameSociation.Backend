@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,7 +27,7 @@ namespace Association.Application.Queries.GetAssociateInvitations
             var associations = _queryProcessor
                 .Query<AssociationProjection>()
                 .Where(x => associationIds.Contains(x.Id))
-                .Select(x => new { x.Id, x.Name })
+                .Select(x => new {x.Id, x.Name})
                 .ToList();
 
             var invitations = new List<InvitationView>();

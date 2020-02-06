@@ -20,7 +20,7 @@ namespace Association.Application.Queries.GetJoinedAssociations
         public Task<List<AssociationView>> Handle(GetJoinedAssociations request, CancellationToken cancellationToken)
         {
             var associateProjection = _queryProcessor.Query<AssociateProjection>().FirstOrDefault(x => x.Id == request.AssociateId);
-            if(associateProjection?.JoinedAssociationIds == null)
+            if (associateProjection?.JoinedAssociationIds == null)
                 return Task.FromResult(new List<AssociationView>());
 
 

@@ -14,10 +14,11 @@ namespace Association.Domain.Events
             MembershipStatusId = membershipStatusId;
         }
 
-        public Guid Id { get; }
         public Guid OwnerId { get; }
         public string Name { get; }
         public int MembershipRoleId { get; }
         public int MembershipStatusId { get; }
+
+        public Guid Id { get; }
     }
 }

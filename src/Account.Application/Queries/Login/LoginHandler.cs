@@ -12,8 +12,8 @@ namespace Account.Application.Queries.Login
 {
     public class LoginHandler : IQueryHandler<Login, LoginResult>
     {
-        private readonly IQueryProcessor _queryProcessor;
         private readonly IHashService _hashService;
+        private readonly IQueryProcessor _queryProcessor;
         private readonly ITokenService _tokenService;
 
         public LoginHandler(IQueryProcessor queryProcessor, IHashService hashService, ITokenService tokenService)

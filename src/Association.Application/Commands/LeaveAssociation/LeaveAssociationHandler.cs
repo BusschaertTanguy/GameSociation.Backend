@@ -13,6 +13,7 @@ namespace Association.Application.Commands.LeaveAssociation
         {
             _associationRepository = associationRepository;
         }
+
         public async Task Handle(LeaveAssociation notification, CancellationToken cancellationToken)
         {
             var association = await _associationRepository.GetById(notification.AssociationId).ConfigureAwait(false);

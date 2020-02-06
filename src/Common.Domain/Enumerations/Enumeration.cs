@@ -13,14 +13,18 @@ namespace Common.Domain.Enumerations
             Display = display;
         }
 
-        public int Id { get; private set; }
+        public int Id { get; }
 
-        public string Display { get; private set; }
+        public string Display { get; }
+
+        public int CompareTo(object other)
+        {
+            return Id.CompareTo(((Enumeration) other).Id);
+        }
 
         public static IEnumerable<T> GetAll<T>() where T : Enumeration
         {
             var fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
-
             return fields.Select(f => f.GetValue(null)).Cast<T>();
         }
 
@@ -38,11 +42,6 @@ namespace Common.Domain.Enumerations
         public override int GetHashCode()
         {
             return Id.GetHashCode();
-        }
-
-        public int CompareTo(object other)
-        {
-            return Id.CompareTo(((Enumeration) other).Id);
         }
     }
 }

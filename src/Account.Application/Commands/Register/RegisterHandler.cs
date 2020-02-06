@@ -13,9 +13,9 @@ namespace Account.Application.Commands.Register
 {
     public class RegisterHandler : ICommandHandler<Register>
     {
-        private readonly IQueryProcessor _queryProcessor;
         private readonly IAccountRepository _accountRepository;
         private readonly IHashService _hashService;
+        private readonly IQueryProcessor _queryProcessor;
 
         public RegisterHandler(IQueryProcessor queryProcessor, IAccountRepository accountRepository, IHashService hashService)
         {

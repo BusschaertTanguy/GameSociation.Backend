@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Association.Domain.Enumerations;
-using Common.Domain.Enumerations;
 using Common.Domain.ValueObjects;
 
 namespace Association.Domain.ValueObjects
 {
     public class Membership : ValueObject
     {
-        private readonly Guid _associationId;
         private readonly Guid _associateId;
+        private readonly Guid _associationId;
         private readonly MembershipRole _role;
         private readonly MembershipStatus _status;
 
@@ -22,12 +20,13 @@ namespace Association.Domain.ValueObjects
             _status = status;
         }
 
-        public bool IsAssociate(Guid associateId) => _associateId == associateId;
-        public bool HasEquivalentRole(MembershipRole role) => _role.IsEquivalent(role);
         public bool IsPending => _status.Equals(MembershipStatus.Pending);
         public bool IsAccepted => _status.Equals(MembershipStatus.Accepted);
         public bool CanPromote => _role.Equals(MembershipRole.Member);
         public bool CanDemote => _role.Equals(MembershipRole.Admin);
+
+        public bool IsAssociate(Guid associateId) => _associateId == associateId;
+        public bool HasEquivalentRole(MembershipRole role) => _role.IsEquivalent(role);
 
         public Membership Accept()
         {

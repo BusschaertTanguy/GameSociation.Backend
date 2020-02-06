@@ -11,8 +11,8 @@ namespace Association.Application.Commands.InviteToAssociation
 {
     public class InviteToAssociationHandler : ICommandHandler<InviteToAssociation>
     {
-        private readonly IQueryProcessor _queryProcessor;
         private readonly IAssociationRepository _associationRepository;
+        private readonly IQueryProcessor _queryProcessor;
 
         public InviteToAssociationHandler(IQueryProcessor queryProcessor, IAssociationRepository associationRepository)
         {

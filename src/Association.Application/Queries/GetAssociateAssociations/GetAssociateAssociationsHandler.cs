@@ -29,7 +29,7 @@ namespace Association.Application.Queries.GetAssociateAssociations
             if (associateProjection.JoinedAssociationIds != null)
                 associationIds.AddRange(associateProjection.JoinedAssociationIds);
 
-            if(associateProjection.OwnedAssociationIds != null)
+            if (associateProjection.OwnedAssociationIds != null)
                 associationIds.AddRange(associateProjection.OwnedAssociationIds);
 
             var associationProjections = _queryProcessor.Query<AssociationProjection>().Where(x => associationIds.Contains(x.Id)).ToList();

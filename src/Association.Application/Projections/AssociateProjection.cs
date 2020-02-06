@@ -6,11 +6,11 @@ namespace Association.Application.Projections
 {
     public class AssociateProjection : IProjectionRoot
     {
-        public Guid Id { get; set; }
         public TagProjection Tag { get; set; }
         public Guid AccountId { get; set; }
         public IList<Guid> OwnedAssociationIds { get; set; }
         public IList<Guid> JoinedAssociationIds { get; set; }
         public IList<InvitationProjection> Invitations { get; set; }
+        public Guid Id { get; set; }
     }
 }

@@ -15,11 +15,6 @@ namespace Common.Domain.ValueObjects
             return ReferenceEquals(left, null) || left.Equals(right);
         }
 
-        protected static bool NotEqualOperator(ValueObject left, ValueObject right)
-        {
-            return !(EqualOperator(left, right));
-        }
-
         protected abstract IEnumerable<object> GetAtomicValues();
 
         public override bool Equals(object obj)

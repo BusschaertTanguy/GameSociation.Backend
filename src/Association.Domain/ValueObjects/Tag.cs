@@ -5,8 +5,8 @@ namespace Association.Domain.ValueObjects
 {
     public class Tag : ValueObject
     {
-        private readonly string _username;
         private readonly int _number;
+        private readonly string _username;
 
         public Tag(string username, int number)
         {

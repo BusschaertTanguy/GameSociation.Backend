@@ -117,7 +117,7 @@ namespace Association.Domain.Entities
             if (!membership.IsAccepted)
                 throw new InvalidOperationException("Can only promote accepted member");
 
-            if(!membership.CanPromote)
+            if (!membership.CanPromote)
                 throw new InvalidOperationException("Can only promote associates with status Member");
 
             RaiseEvent(new AssociatePromoted(Id, associateId), Apply);
