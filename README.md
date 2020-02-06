@@ -1,5 +1,5 @@
 # GameSociation.Backend
-GameSociation Backend project.
+GameSociation Backend project, used as PoC for MartenDB EventStore
 
 ## Project specifications
 
